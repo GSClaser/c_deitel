@@ -21,6 +21,7 @@
 int main()
 {
 	int a,b,c;
+	int go=1;
 	int accamulator = 0;
 	int instructionCounter=0;
 	int instructionRegister=0;
@@ -39,7 +40,7 @@ int main()
 			break;
 		operand++;
 	}
-	while(1)
+	while(go)
 	{
 		instructionRegister=memory[instructionCounter];
 		operandCode=instructionRegister/100;
@@ -139,6 +140,7 @@ int main()
 						if(a==0)
 						{
 							printf("a equal to zero,error!\n");
+							go=0;
 							continue;
 						}
 						accamulator/=a;
@@ -148,6 +150,7 @@ int main()
 						if(b==0)
 						{
 							printf("b equal to zero,error!\n");
+							go=0;
 							continue;
 						}
 						accamulator/=b;
@@ -157,6 +160,7 @@ int main()
 						if(c==0)
 						{
 							printf("c equal to zero,error!\n");
+							go=0;
 							continue;
 						}
 						accamulator/=c;
@@ -179,7 +183,19 @@ int main()
 
 				}
 			break;
-
+			case BRANCH:
+				instructionCounter=operand;
+			break;
+			case BRANCHNEG:
+				if(accamulator<0)
+					instructionCounter=operand;			   break;
+			case BRANCHZERO:
+				if(accamulator==0)
+					instructionCounter=operand;
+			break;
+			case HALT:
+				go=0;
+				break;
 			case ADD:
 				switch(operand)
 				{
