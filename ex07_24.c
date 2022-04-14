@@ -10,47 +10,40 @@ void print(int* arr)
 	printf("\n");
 }
 
+int partition(int* arr,int len,int len2)
+{
+	int pivot = arr[(len+len2)/2];
+	int temp;
+	int i;
+	int j;
+	while(1)
+	{
+		while(arr[i]<pivot)
+			i=i+1;
+		while(arr[j]>pivot)
+			j=j-1;
+		if(i>=j)
+			return j;
+		temp=arr[i];
+		arr[i]=arr[j];
+		arr[j]=temp;
+	}
+}
+
 void quicksort(int* arr,int len,int len2)
 {	
 	int count=len2;
+	int count2=len;
 	int temp;
 	int i;
-	if(len<0 || len2<0)
-		return;
-	if(len==len2)
-		return;
-	if(len2-len==1)
-		return;
+	int p;
 	printf("%d %d\n",len,len2);
-	while(1)
+	if(len<len2)
 	{
-		if(arr[len]>arr[count])
-		{
-			temp=arr[count];
-			arr[count]=arr[len];
-			arr[len]=temp;
-			break;
-		}
-		count=count-1;
+		p=partition(arr,len,len2);
+		quicksort(arr,len,p);
+		quicksort(arr,p+1,len2);
 	}
-	i=count;
-	while(1)
-	{
-		if(arr[count]<arr[i])
-		{
-			temp=arr[i];
-			arr[i]=arr[count];
-			arr[count]=temp;
-			
-			break;
-		}
-		i=i-1;
-	}
-	print(arr);
-	
-	quicksort(arr,len,count); 
-	quicksort(arr,count,len2);
-
 }
 
 int main()
