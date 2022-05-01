@@ -12,10 +12,10 @@ void print(int* arr)
 
 int partition(int* arr,int len,int len2)
 {
-	int pivot = arr[(len+len2)/2];
+	int pivot = (arr[(len+len2)/2]);
 	int temp;
-	int i;
-	int j;
+	int i=len;
+	int j=len2;
 	while(1)
 	{
 		while(arr[i]<pivot)
@@ -32,12 +32,7 @@ int partition(int* arr,int len,int len2)
 
 void quicksort(int* arr,int len,int len2)
 {	
-	int count=len2;
-	int count2=len;
-	int temp;
-	int i;
 	int p;
-	printf("%d %d\n",len,len2);
 	if(len<len2)
 	{
 		p=partition(arr,len,len2);
