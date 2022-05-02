@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 struct hardware
 {
 	int id;
 	char instrument[20];
 	int numbers;
-	float price;
+	double price;
 };
 
 int main()
@@ -18,6 +19,8 @@ int main()
 	char* tok=NULL;
 	char temp[100];
 	int counter;
+	int flag;
+	int flag2;
 	if((fp=fopen("hardware.dat","w"))==NULL)
 	{
 		puts("No data");	
@@ -33,8 +36,10 @@ int main()
 		{
 			printf("Enter 5 nodes about node,name,number and price:\n");
 			gets(ch);
-			tok=strtok(ch," ");
 			counter=0;
+			flag=0;
+			flag2=0;
+			tok=strtok(ch," ");
 			if(isdigit(tok[0]))
 			{
 				Hardware.id=atoi(tok);
@@ -46,16 +51,21 @@ int main()
 				{
 					strcat(Hardware.instrument,tok);
 					strcat(Hardware.instrument," ");
+					flag=1;
 				}
-				if(isdigit(tok[0])&&counter==1)
+				if(isdigit(tok[0])&&counter==2&&flag2==1)
+				{
+					Hardware.price=atof(tok);
+				}
+				if(isdigit(tok[0])&&counter==1&&flag==1)
 				{
 					Hardware.numbers=atoi(tok);
-					counter++;		
+					counter++;
+					flag2=1;
 				}	
-				if(isdigit(tok[0])&&counter==2)
-				{
-					Hardware.price=atof(tok);	
-				}	
+					
+				
+				
 				tok=strtok(NULL," ");
 			}
 			printf("%d %s %d %f\n",Hardware.id,Hardware.instrument,Hardware.numbers,Hardware.price);
