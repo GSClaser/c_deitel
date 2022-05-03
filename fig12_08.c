@@ -75,11 +75,11 @@ void push(StackNodePtr *topPtr,int info)
     }
     else
     {
-        printf("%d not inserted. No memory avalailble.\n",info)
+        printf("%d not inserted. No memory avalailble.\n",info);
     }
 }
 
-void pop(StackNodePtr *topPtr)
+int pop(StackNodePtr *topPtr)
 {
     StackNodePtr tempPtr;
     int popValue;
@@ -92,5 +92,23 @@ void pop(StackNodePtr *topPtr)
 
 void printStack(StackNodePtr currentPtr)
 {
+    if(currentPtr == NULL)
+    {
+        puts("Stack is empty.\n");
+    }
+    else
+    {
+        puts("The stack is:");
+        while(currentPtr!=NULL)
+        {
+            printf("%d -->",currentPtr->data);
+            currentPtr = currentPtr->nextPtr;
+        }
+        puts("NULL\n");
+    }
+}
 
+int isEmpty(StackNodePtr topPtr)
+{
+    return topPtr == NULL;
 }
