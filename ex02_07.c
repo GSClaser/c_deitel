@@ -2,8 +2,16 @@
 
 int main()
 {
-	scanf("%d",value);
-	printf("The product of %d and %d is %d\n",x,y,z);
+	int value;
+	int x,y,z;
+	int sumOfNumbers;
+	int firstNumber;
+	int secondNumber;
+	int number;
+	int largest;
+	int anInteger;
+	scanf("%d",&value);
+	printf("The product of %d and %d is %d\n",&x,&y,&z);
 	sumOfNumbers=firstNumber+secondNumber;
 	if(number>=largest)
 		largest=number;
