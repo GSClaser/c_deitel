@@ -9,6 +9,7 @@ void addValue(struct Node** node,int value);
 void printNode(struct Node* node);
 void concatenateNode(struct Node** node3,struct Node* node1,struct Node* node2);
 void deleteNode(struct Node** node);
+void sortArray(struct Node** node);
 
 int main()
 {
@@ -95,7 +96,41 @@ void concatenateNode(struct Node** node3,struct Node* node1,struct Node* node2)
 		addValue(node3,node2->value);
 		node2=node2->next;
 	}
+	sortArray(node3);
 }
+
+void sortArray(struct Node** node)
+{
+	struct Node* temp=NULL;
+	
+	struct Node* node2=*node;
+	struct Node* node3=*node;
+	struct Node* previos=*node;
+
+	while(node3!=NULL)
+	{
+		node2=node3;
+		while(node2!=NULL)
+		{
+			if(node2->value > previos->value)
+			{
+				temp=node2->next;
+				node2->next=previos;
+				previos->next=temp;
+			}
+			previos=node2;
+			node2=node2->next;
+			puts("");
+			printNode(*node);
+			puts("");
+		}
+		
+		node3=node3->next;
+		
+
+	}
+}
+
 void deleteNode(struct Node** node)
 {
 	struct Node* temp;
@@ -104,7 +139,5 @@ void deleteNode(struct Node** node)
 		temp=*node;
 		*node=(*node)->next;
 		free(temp);
-		
-		
 	}
 }
