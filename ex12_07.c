@@ -2,14 +2,19 @@
 
 struct Node{
 	int value;
+	int index;
 	struct Node* next;
 };
 
+int index=0;
 void addValue(struct Node** node,int value);
 void printNode(struct Node* node);
 void concatenateNode(struct Node** node3,struct Node* node1,struct Node* node2);
 void deleteNode(struct Node** node);
 void sortArray(struct Node** node);
+int getSize(struct Node* node);
+int getElement(struct Node* node,int index);
+void setElement(struct Node* node,int index,int value);
 
 int main()
 {
@@ -21,9 +26,13 @@ int main()
 	addValue(&node1,3);
 	addValue(&node1,5);
 
+	index=0;
+
 	addValue(&node2,2);
 	addValue(&node2,4);
 	addValue(&node2,6);
+
+	index=0;
 
 	printNode(node1);
 	puts("");
@@ -47,6 +56,7 @@ int main()
 
 void addValue(struct Node** node,int value)
 {
+	
 	struct Node* newNode=malloc(sizeof(struct Node));
 	if(newNode!=NULL)
 	{
@@ -56,6 +66,8 @@ void addValue(struct Node** node,int value)
 		{
 			newNode->next=*node;
 			*node=newNode;
+			(*node)->index=index;
+			index++;
 		}
 		else
 		{
@@ -69,7 +81,10 @@ void addValue(struct Node** node,int value)
 			}
 			previosNode->next=newNode;
 			newNode->next=currentNode;
+			newNode->index=index;
+			index++;
 		}
+		
 	}
 	else
 	{
@@ -86,6 +101,7 @@ void printNode(struct Node* node)
 }
 void concatenateNode(struct Node** node3,struct Node* node1,struct Node* node2)
 {
+	index=0;
 	while(node1!=NULL)
 	{
 		addValue(node3,node1->value);
@@ -99,35 +115,59 @@ void concatenateNode(struct Node** node3,struct Node* node1,struct Node* node2)
 	sortArray(node3);
 }
 
+int getSize(struct Node* node)
+{
+	int size=0;
+	while(node!=NULL)
+	{
+		size++;
+		node=node->next;
+	}
+	return size;
+}
+
+int getElement(struct Node* node,int index)
+{
+	while(node!=NULL||node->index==index)
+	{
+		if(node->index==index)
+			break;
+		node=node->next;
+	}
+	return node->value;
+}
+
+void setElement(struct Node* node,int index,int value)
+{
+	while(node!=NULL)
+	{
+		if(node->index==index)
+			break;
+		node=node->next;
+	}
+	node->value=value;
+}
+
 void sortArray(struct Node** node)
 {
-	struct Node* temp=NULL;
-	
-	struct Node* node2=*node;
-	struct Node* node3=*node;
-	struct Node* previos=*node;
-
-	while(node3!=NULL)
+	int size=getSize(*node);
+	int i,j,temp;
+	int flag;
+	for(i=0;i<size-1;i++)
 	{
-		node2=node3;
-		while(node2!=NULL)
+		flag=1;
+		for(j=0;j<size-i-1;j++)
 		{
-			if(node2->value > previos->value)
+			if(getElement(*node,j)>getElement(*node,j+1))
 			{
-				temp=node2->next;
-				node2->next=previos;
-				previos->next=temp;
+				flag=0;
+				temp=getElement(*node,j+1);
+				setElement(*node,j+1,getElement(*node,j));
+				setElement(*node,j,temp);
 			}
-			previos=node2;
-			node2=node2->next;
-			puts("");
-			printNode(*node);
-			puts("");
 		}
-		
-		node3=node3->next;
-		
-
+		if(flag)
+			break;
 	}
 }
 
