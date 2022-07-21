@@ -37,7 +37,7 @@ int main()
             case 2:
                 if(!isEmpty(stackPtr))
                 {
-                    printf("The popped value is %d\\n",pop(&stackPtr));
+                    printf("The popped value is %d\n",pop(&stackPtr));
                 }    
                 printStack(stackPtr);
                 break;

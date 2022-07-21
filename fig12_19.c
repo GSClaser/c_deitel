@@ -61,6 +61,10 @@ void insertNode(TreeNodePtr *treePtr,int value)
 	{
 		if(value<(*treePtr)->data)
 		{
+			insertNode(&((*treePtr)->leftPtr),value);
+		}
+		else if(value>(*treePtr)->data)
+		{
 			insertNode(&((*treePtr)->rightPtr),value);
 		}
 		else
