@@ -16,7 +16,7 @@ int main()
 	int i=0;
 	struct Stack* stack=NULL;
 	printf("enter text: ");
-	scanf("%s",ch);
+	gets(ch);
 	while(ch[i])
 	{
 		addStack(&stack,ch[i]);
