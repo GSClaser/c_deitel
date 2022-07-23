@@ -22,8 +22,9 @@ enum operators{plus=0,minus=0,divide=1,multply=1,power=1,module=1};
 
 int main()
 {
-	char infix[]="(6+2)*5-8/4";
+	char infix[]="1-8/2+3";
 	char postfix[100];
+	printf("%s\n",infix);
 	convertToPostfix(infix,postfix);
 	precedence('/','+');
 	
@@ -37,34 +38,50 @@ void convertToPostfix(char infix[],char postfix[])
 	int i3=0;
 	char value;
 	StackNodePtr stack=NULL;
+	/*
 	while(infix[i])
 	{
+		if(infix[i]=='('||infix[i]==')'||infix[i]=='*'||infix[i]=='/'||infix[i]=='+'||
+			infix[i]=='%'||infix[i]=='^')
+			push(&stack,infix[i]);
+
+	}
+	*/
+	i=0;
+	while(infix[i])
+	{
+		/*
 		if(infix[i]=='(')
 		{
 			push(&stack,'(');
 		}
 		if(infix[i]==')')
 		{
-			while((value=pop(&stack))!='(')
+			while((value=pop(&stack))!='('&&!isEmpty(stack))
 			{
 				postfix[i2]=value;
 				i2++;
 			}
 		}
-		if(isOperator(infix[i])&&!isEmpty(stack))
+		*/
+		if(isOperator(infix[i]))
 		{
-			value=pop(&stack);
-			while(precedence(value,infix[i])==1||precedence(value,infix[i])==0)
+			if(isEmpty(stack))
+				push(&stack,infix[i]);
+			while(!isEmpty(stack))
 			{
-				if(value=='(')
+				value=pop(&stack);
+				if(precedence(value,infix[i])>=0)
 				{
-					push(&stack,'(');
-					break;
+					postfix[i2]=value;
+					i2++;
 				}
-				postfix[i2]=value;
-				i2++;
+				else
+				{
+					push(&stack,value);
+				}
 			}
-			push(&stack,infix[i]);
+			
 		}
 		if(isdigit(infix[i]))
 		{
@@ -91,11 +108,85 @@ int isOperator(char c)
 }
 int precedence(char operator1,char operator2)
 {
-	if(operator1-operator2>0)
+	if(operator1=='+' && operator2=='+')
+		return 0;
+	if(operator1=='-' && operator2=='+')
+		return 0;
+	if(operator1=='*' && operator2=='+')
 		return 1;
-	else
-		return 
+	if(operator1=='/' && operator2=='+')
+		return 1;
+	if(operator1=='%' && operator2=='+')
+		return 1;
+	if(operator1=='^' && operator2=='+')
+		return 1;
 
+	if(operator1=='+' && operator2=='-')
+		return 0;
+	if(operator1=='-' && operator2=='-')
+		return 0;
+	if(operator1=='*' && operator2=='-')
+		return 1;
+	if(operator1=='/' && operator2=='-')
+		return 1;
+	if(operator1=='%' && operator2=='-')
+		return 1;
+	if(operator1=='^' && operator2=='-')
+		return 1;
+
+	if(operator1=='+' && operator2=='*')
+		return -1;
+	if(operator1=='-' && operator2=='*')
+		return -1;
+	if(operator1=='*' && operator2=='*')
+		return 0;
+	if(operator1=='/' && operator2=='*')
+		return 0;
+	if(operator1=='%' && operator2=='*')
+		return 0;
+	if(operator1=='^' && operator2=='*')
+		return 0;
+
+	if(operator1=='+' && operator2=='/')
+		return -1;
+	if(operator1=='-' && operator2=='/')
+		return -1;
+	if(operator1=='*' && operator2=='/')
+		return 0;
+	if(operator1=='/' && operator2=='/')
+		return 0;
+	if(operator1=='%' && operator2=='/')
+		return 0;
+	if(operator1=='^' && operator2=='/')
+		return 0;
+
+	if(operator1=='+' && operator2=='%')
+		return -1;
+	if(operator1=='-' && operator2=='%')
+		return -1;
+	if(operator1=='*' && operator2=='%')
+		return 0;
+	if(operator1=='/' && operator2=='%')
+		return 0;
+	if(operator1=='%' && operator2=='%')
+		return 0;
+	if(operator1=='^' && operator2=='%')
+		return 0;
+
+	if(operator1=='+' && operator2=='^')
+		return -1;
+	if(operator1=='-' && operator2=='^')
+		return -1;
+	if(operator1=='*' && operator2=='^')
+		return 0;
+	if(operator1=='/' && operator2=='^')
+		return 0;
+	if(operator1=='%' && operator2=='^')
+		return 0;
+	if(operator1=='^' && operator2=='^')
+		return 0;
+	
+	return 0;
 }
 void push(StackNodePtr *topPtr,char value)
 {
@@ -125,7 +216,7 @@ char stackTop(StackNodePtr topPtr)
 
 }
 int isEmpty(StackNodePtr topPtr)
-{
+{	
 	return topPtr==NULL;
 }
 void printStack(StackNodePtr topPtr)
