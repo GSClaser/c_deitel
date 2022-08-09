@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 struct stackNode
 {
@@ -22,8 +23,8 @@ enum operators{plus=0,minus=0,divide=1,multply=1,power=1,module=1};
 
 int main()
 {
-	char infix[]="1-8/2+3";
-	char postfix[100];
+	char infix[100]="(6+2)*5-8/4";
+	char postfix[100]={0};
 	printf("%s\n",infix);
 	convertToPostfix(infix,postfix);
 	precedence('/','+');
@@ -36,7 +37,8 @@ void convertToPostfix(char infix[],char postfix[])
 	int i=0;
 	int i2=0;
 	int i3=0;
-	char value;
+	char c;
+	char c2;
 	StackNodePtr stack=NULL;
 	/*
 	while(infix[i])
@@ -48,45 +50,43 @@ void convertToPostfix(char infix[],char postfix[])
 	}
 	*/
 	i=0;
-	while(infix[i])
+	push(&stack,'(');
+	infix[strlen(infix)]=')';
+	infix[strlen(infix)+1]='\0';
+	while(!isEmpty(stack))
 	{
-		/*
-		if(infix[i]=='(')
+		c = infix[i];
+		if(isdigit(c))
 		{
-			push(&stack,'(');
+			postfix[i2]=c;
+			i2++;
 		}
-		if(infix[i]==')')
+		if(c=='(')
 		{
-			while((value=pop(&stack))!='('&&!isEmpty(stack))
+			push(&stack,c);
+		}
+		if(isOperator(c))
+		{
+			while(isOperator(stackTop(stack))&&precedence(stackTop(stack),c)>=0&&!isEmpty(stack))
 			{
-				postfix[i2]=value;
+				c2=pop(&stack);
+				postfix[i2]=c2;
 				i2++;
-			}
-		}
-		*/
-		if(isOperator(infix[i]))
-		{
-			if(isEmpty(stack))
-				push(&stack,infix[i]);
-			while(!isEmpty(stack))
-			{
-				value=pop(&stack);
-				if(precedence(value,infix[i])>=0)
-				{
-					postfix[i2]=value;
-					i2++;
-				}
-				else
-				{
-					push(&stack,value);
-				}
+
 			}
 			
+			push(&stack,c);
 		}
-		if(isdigit(infix[i]))
+		
+		if(c==')')
 		{
-			postfix[i2]=infix[i];
-			i2++;
+			while(isOperator(stackTop(stack))&&stackTop(stack)!='('&&!isEmpty(stack))
+			{
+				c2=pop(&stack);
+				postfix[i2]=c2;
+				i2++;
+			}
+			if(stackTop(stack)=='(') pop(&stack);//pop (
 		}
 		i++;
 	}
@@ -213,7 +213,11 @@ char pop(StackNodePtr *topPtr)
 }
 char stackTop(StackNodePtr topPtr)
 {
-
+	char value;
+	if(isEmpty(topPtr))
+		return 0;
+	value=topPtr->value;
+	return value;
 }
 int isEmpty(StackNodePtr topPtr)
 {	
