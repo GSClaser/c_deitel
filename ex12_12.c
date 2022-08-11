@@ -23,7 +23,7 @@ enum operators{plus=0,minus=0,divide=1,multply=1,power=1,module=1};
 
 int main()
 {
-	char infix[100]="(6+2)*5-8/4";
+	char infix[100]="(6 + 2) * 5 - 8 / 4";
 	char postfix[100]={0};
 	printf("%s\n",infix);
 	convertToPostfix(infix,postfix);
@@ -56,7 +56,7 @@ void convertToPostfix(char infix[],char postfix[])
 	while(!isEmpty(stack))
 	{
 		c = infix[i];
-		if(isdigit(c))
+		if(isdigit(c)||c==' ')
 		{
 			postfix[i2]=c;
 			i2++;
